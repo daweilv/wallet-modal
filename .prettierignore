@@ -1,0 +1,9 @@
+**/*.md
+**/*.svg
+**/*.ejs
+**/*.html
+**/*.d.ts
+package.json
+pnpm-lock.yaml
+package-lock.json
+.idea
