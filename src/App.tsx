@@ -21,8 +21,11 @@ function App() {
 
   // https://mempool.space/testnet/docs/api/rest#get-recommended-fees
   const { data } = useSWR(
-    "https://mempool.space/api/v1/fees/recommended",
+    `https://mempool.space/${network === "testnet" ? "testnet/" : ""}api/v1/fees/recommended`,
     fetcher,
+    {
+      refreshInterval: 60_000,
+    },
   );
 
   useEffect(() => {
@@ -36,7 +39,9 @@ function App() {
   const [txConfirmed, setTxConfirmed] = useState(false);
 
   const { data: txData } = useSWR(
-    txid ? `https://mempool.space/testnet/api/tx/${txid}` : null,
+    txid
+      ? `https://mempool.space/${network === "testnet" ? "testnet/" : ""}api/tx/${txid}`
+      : null,
     fetcher,
     {
       refreshInterval: txConfirmed ? 0 : 60_000,
@@ -51,7 +56,7 @@ function App() {
     <div className="h-screen relative">
       <ConnectButton />
       <div>
-        <div className="mb-4">
+        <div className="mb-5">
           <div>
             <span className="font-bold">Address: </span>
             {address}
@@ -78,7 +83,7 @@ function App() {
           label="Receiver Address:"
           variant="outlined"
           value={toAddress}
-          className="mb-4"
+          className="mb-5"
           onChange={e => setToAddress(e.target.value)}
         />
         <TextField
@@ -86,9 +91,23 @@ function App() {
           label="Amount: (satoshis)"
           variant="outlined"
           value={satoshis}
-          className="mb-4"
+          className="mb-5"
           onChange={e => setSatoshis(e.target.value)}
         />
+        <div className="flex gap-4 text-xs mb-3">
+          <div>
+            Slow <span>{data?.hourFee} sat/vB</span>
+            <div className="text-gray-500"> (About 1 hours)</div>
+          </div>
+          <div>
+            Avg <span>{data?.halfHourFee} sat/vB</span>
+            <div className="text-gray-500"> (About 30 minutes)</div>
+          </div>
+          <div>
+            Fast <span>{data?.fastestFee} sat/vB</span>
+            <div className="text-gray-500"> (About 10 minutes)</div>
+          </div>
+        </div>
         <TextField
           fullWidth
           label="Fee Rate: "
@@ -129,7 +148,7 @@ function App() {
             }
           }}
         >
-          SendBitcoin
+          Send Bitcoin
         </Button>
       </div>
     </div>

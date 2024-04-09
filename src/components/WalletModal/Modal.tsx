@@ -15,7 +15,7 @@ const Modal = props => {
   return (
     <Dialog onClose={onClose} open={open}>
       <DialogTitle>Connect a Wallet</DialogTitle>
-      <List sx={{ pt: 0 }}>
+      <List sx={{ pt: 0 }} className="w-80">
         {wallets.map(wallet => (
           <ListItem disableGutters key={wallet.name}>
             <ListItemButton

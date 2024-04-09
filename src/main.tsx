@@ -1,5 +1,5 @@
 import React from "react";
-import ReactDOM from "react-dom/client";
+import { createRoot } from "react-dom/client";
 import {
   createTheme,
   StyledEngineProvider,
@@ -12,7 +12,7 @@ import "./index.css";
 import WalletModalProvider from "./components/WalletModal/Provider.tsx";
 
 const rootElement = document.getElementById("root");
-const root = ReactDOM.createRoot(rootElement!);
+const root = createRoot(rootElement!);
 
 const theme = createTheme({
   components: {
@@ -22,6 +22,16 @@ const theme = createTheme({
       },
     },
     MuiPopper: {
+      defaultProps: {
+        container: rootElement,
+      },
+    },
+    MuiDialog: {
+      defaultProps: {
+        container: rootElement,
+      },
+    },
+    MuiModal: {
       defaultProps: {
         container: rootElement,
       },
